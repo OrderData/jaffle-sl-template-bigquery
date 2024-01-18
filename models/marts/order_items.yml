@@ -30,6 +30,10 @@ semantic_models:
         description: The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order.
         agg: sum
         expr: product_price
+      - name: revenue_prev_month
+        description: The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order. Previous month.
+        agg: sum
+        expr: product_price
       - name: food_revenue
         description: The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order.
         agg: sum
@@ -51,6 +55,12 @@ metrics:
     label: Revenue
     type_params:
       measure: revenue
+  - name: revenue_prev_month
+    description: Sum of the product revenue for each order item. Excludes tax.
+    type: simple
+    label: Revenue Previous Month
+    type_params:
+      measure: revenue_prev_month
   - name: order_cost
     description: Sum of cost for each order item.
     label: Order Cost
@@ -85,13 +95,13 @@ metrics:
     type: derived
     label: Revenue Growth % M/M
     type_params:
-      expr: (current_revenue - revenue_prev_month)*100/revenue_prev_month
+      expr: (current_revenue - revenue_previous_month)*100/revenue_prev_month
       metrics:
         - name: revenue
           alias: current_revenue
-        - name: revenue
+        - name: revenue_prev_month
           offset_window: 1 month
-          alias: revenue_prev_month
+          alias: revenue_previous_month
   - name: order_gross_profit
     description: Gross profit from each order.
     type: derived
