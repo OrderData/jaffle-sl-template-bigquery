@@ -27,9 +27,10 @@ models:
 
 semantic_models:
   - name: customers
+    label: Customers
     defaults:
       agg_time_dimension: first_ordered_at
-    description: |
+    description: |-
       Customer grain mart.
     model: ref('customers')
     entities:
@@ -45,6 +46,7 @@ semantic_models:
         type: time
         type_params:
           time_granularity: day
+        expr: first_orderd_at
       - name: last_ordered_at
         type: time
         type_params:
