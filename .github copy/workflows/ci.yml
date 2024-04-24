@@ -1,0 +1,27 @@
+name: DBT Cloud CI/CD
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  run_dbt_cloud_job:
+    name: Run dbt Cloud Job
+    runs-on: ubuntu-latest
+
+    env:
+      DBT_ACCOUNT_ID: 12842
+      DBT_PROJECT_ID: 334989
+      DBT_PR_JOB_ID:  498379
+      DBT_API_KEY: ${{ secrets.DBT_API_KEY }}
+      DBT_JOB_CAUSE: 'GitHub Pipeline CI Job'
+      DBT_JOB_BRANCH: ${{ github.ref_name }}
+
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.9"
+      - name: Run dbt Cloud job
+        run: "python python/run_and_monitor_dbt_job.py"
